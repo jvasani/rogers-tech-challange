@@ -1,0 +1,44 @@
+mongo:
+  uri: mongodb://localhost:27017/
+
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:test
+  devtools:
+    livereload:
+      enabled: false
+  server:
+    port: 8080
+  security:
+    user:
+      name: admin
+      password: admin
+  main:
+    allow-bean-definition-overriding: true
+
+
+  ### Ehcache
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+
+### Bucket4j
+  bucket4j:
+    enabled: true
+    filters[0]:
+      cache-name: buckets
+      filter-method: servlet
+      http-response-body: { "message": "Too many requests" }
+      url: .*
+      strategy: first
+      rate-limits[0]:
+        bandwidths[0]:
+          capacity: 10
+          time: 1
+          unit: minutes
+          fixed-refill-interval: 0
+          fixed-refill-interval-unit: minutes
+
